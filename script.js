@@ -42,12 +42,12 @@ function Linkedlist() {
         } 
         return count;
     }
-    function head() {
+    function firstElement() {
         let current = head;
-            return current
+            return current;
     
     }
-    function tail() {
+    function tailElement() {
         let current = head;
         if(current === null) {
             return null;
@@ -74,18 +74,93 @@ function Linkedlist() {
         return null;
     }
     function pop() {
+        if (head === null) {
+            return null;
+        }
+        if (head.next === null) {
+            let popped = head;
+            head = null;
+        }
+        let current = head;
+        while(current.next.next !== null) {
+            current = current.next;
+        }
+        let popped = current.next;
+        current.next = null;        
+    }
+    // used this to initially check my list
+    // function toString() {
+    //     let current = head;
+    //     let result = '';
+    //     while (current !== null) {
+    //         result += `(${current.value}) -> `;
+    //         current = current.next;
+    //     }
+    //     result += 'null';
+    //     return result;
+    // }
+    function contains(value) {
+        if(head === null) {
+            return false;
+        }
+        if (head.next === null && head.value !== value) {
+            return false;
+        } 
+        if (head.next === null && head.value === value) {
+            return true;
+        }
+        let current = head;
+        while(current.next !== null){
+            current = current.next;
+            if(current.value === value) {
+                return true;
+            } 
+        }
+        return false;
+    }
+    function find(value) {
+        let count = 0;
         let current = head;
         while(current !== null) {
-            if(current.next === null) {
-                current.next = null;
+            if(current.value === value) {
+                return count;
             }
+            current = current.next;
+            count++;
         }
+        return null;
+ 
     }
-
-    return {append, prepend, size, head, tail, at, pop}
+    function toString() {
+        let current = head;
+        let ourString = '';
+        while(current !== null) {
+            let currentValue = current.value;
+            ourString += currentValue + ' -> ';
+            current = current.next;
+        }
+        return ourString + 'null';
+    }
+    function insertAt(value, index) {
+        let current = head;
+        let count = 0;
+        while(current !== null){
+            if (count === index) {
+                let previousCurrent = current.next;
+                current.next = previousCurrent;
+                current.value = value;
+            }         
+            current = current.next;
+            count++;   
+        }
+        
+    }
+    return {append, prepend, size, firstElement, tailElement, at, pop, contains, find, toString, insertAt}
 }
 
 
 const list = Linkedlist();
-console.log(list.append('dog'))
-console.log(list.append('cat'))
+list.append('cat');
+list.append('dog');
+list.insertAt('cow',1)
+console.log(list.toString());
